@@ -1,5 +1,6 @@
 from typing import List
 import boto3
+from boto3.dynamodb.conditions import Key
 
 
 class DynamodbClient:
@@ -25,11 +26,6 @@ class DynamodbClient:
             }
         )
 
-    def get_all_job_keys(self):
-        items = self.upwork_jobs_table.scan()['Items']
-        job_keys = [item['title-description20'] for item in items]
-        return job_keys
-
     def create_user_keyword_subscription(self, name: str, keywords: List[str], kw_weights: List[int]):
         response = self.keywords_table.put_item(
             Item={
@@ -48,6 +44,12 @@ class DynamodbClient:
         results = self.keywords_table.get_item(Key={'name': subscription_name})['Item']['results']
         return results
 
+    def is_job_in_table(self, job_key):
+        response = self.upwork_jobs_table.query(
+            KeyConditionExpression=Key('title-description20').eq(job_key)
+        )['Items']
+        return len(response) > 0
+
     def update_user_subscription_results(self, name, new_results):
         response = self.keywords_table.update_item(
             Key={'name': name},
@@ -62,11 +64,11 @@ class DynamodbClient:
 
 if __name__ == '__main__':
     db_client = DynamodbClient()
-    db_client.create_user_keyword_subscription(
-        'test subscription 2',
-        ['business', 'awesomeness', 'money', 'spreadsheets', 'computer'],
-        [1, 20, 1, 1, 1]
-    )
+    # db_client.create_user_keyword_subscription(
+    #     'test subscription 2',
+    #     ['business', 'awesomeness', 'money', 'spreadsheets', 'computer'],
+    #     [1, 20, 1, 1, 1]
+    # )
     # print(db_client.get_user_subscription_results(
     #     'test subscription',
     # ))

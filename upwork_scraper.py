@@ -70,14 +70,13 @@ def scrape_upwork():
     # add new jobs to the Jobs Table
     dynamodb_client = DynamodbClient()
     # get all job keys currently in the database
-    all_job_keys = dynamodb_client.get_all_job_keys()
     new_jobs_count = 0
     new_jobs_titles = []
     job_data_map = {}
     for new_job in new_job_data:
         # add new job to the jobs table if it isn't already there
         job_key = f'{new_job["title"]}-{new_job["description"][:20]}'
-        if job_key not in all_job_keys:
+        if dynamodb_client.is_job_in_table(job_key):
             dynamodb_client.put_job(new_job)
             new_jobs_count += 1
             new_jobs_titles.append(new_job['title'])
