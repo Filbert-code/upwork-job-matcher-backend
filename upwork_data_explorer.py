@@ -1,6 +1,5 @@
 import json
 from rake_nltk import Rake, Metric
-from nltk.tokenize import word_tokenize
 from thefuzz import fuzz, process
 import boto3
 

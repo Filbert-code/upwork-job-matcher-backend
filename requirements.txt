@@ -1,0 +1,5 @@
+selenium
+boto3[crt]
+rake_nltk
+thefuzz
+python-Levenshtein
