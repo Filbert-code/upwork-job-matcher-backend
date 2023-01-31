@@ -92,9 +92,10 @@ def scrape_upwork():
         job_matcher.overall_score_threshold = len(user_kws_and_weights.keys()) / 2
         matched_jobs = job_matcher.get_job_matches()
         # add matched jobs to the results attribute of the subscription
+        curr_user_sub_matched_jobs = dynamodb_client.get_user_subscription_results(sub_name)
         dynamodb_client.update_user_subscription_results(
             name=sub_name,
-            new_results=dynamodb_client.get_user_subscription_results(sub_name) + matched_jobs
+            new_results=(curr_user_sub_matched_jobs + matched_jobs)[-8:]
         )
 
     # data to print as logs in the bot loop
