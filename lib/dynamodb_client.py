@@ -64,6 +64,7 @@ class DynamodbClient:
 
 if __name__ == '__main__':
     db_client = DynamodbClient()
+    print([item['job_key'] for item in db_client.get_user_subscription_results('Python Data Jobs')])
     # db_client.create_user_keyword_subscription(
     #     'test subscription 2',
     #     ['business', 'awesomeness', 'money', 'spreadsheets', 'computer'],

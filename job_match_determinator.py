@@ -27,6 +27,7 @@ class JobMatchDeterminator:
     def set_user_keywords_and_weights(self, user_keywords_and_weights):
         self.user_keywords_and_weights = user_keywords_and_weights
         self.overall_score_threshold = len(user_keywords_and_weights.keys()) - 3
+        self.matched_jobs = []
 
     def get_job_matches(self):
         if self.user_keywords_and_weights is None:
