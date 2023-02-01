@@ -76,11 +76,12 @@ def scrape_upwork():
     for new_job in new_job_data:
         # add new job to the jobs table if it isn't already there
         job_key = f'{new_job["title"]}-{new_job["description"][:20]}'
-        if dynamodb_client.is_job_in_table(job_key):
+        if not dynamodb_client.is_job_in_table(job_key):
             dynamodb_client.put_job(new_job)
             new_jobs_count += 1
             new_jobs_titles.append(new_job['title'])
             job_data_map[job_key] = new_job
+
 
     # find new job matches and update the subscriptions results
     job_matcher = JobMatchDeterminator(job_data_map, print_logs=True)
