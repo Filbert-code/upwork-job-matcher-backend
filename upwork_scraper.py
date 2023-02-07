@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from time import sleep
 from selenium import webdriver
@@ -90,13 +91,13 @@ def scrape_upwork():
         user_kws_and_weights = dict(zip(user_subscription['keywords'], user_subscription['keyword_weights']))
         # run the job match determinator
         job_matcher.set_user_keywords_and_weights(user_kws_and_weights)
-        job_matcher.overall_score_threshold = len(user_kws_and_weights.keys()) / 2
+        job_matcher.sub_name = sub_name
         matched_jobs = job_matcher.get_job_matches()
         # add matched jobs to the results attribute of the subscription
         curr_user_sub_matched_jobs = dynamodb_client.get_user_subscription_results(sub_name)
         dynamodb_client.update_user_subscription_results(
             name=sub_name,
-            new_results=(curr_user_sub_matched_jobs + matched_jobs)[-8:]
+            new_results=(curr_user_sub_matched_jobs + matched_jobs)[-5:]
         )
 
     # data to print as logs in the bot loop
@@ -106,6 +107,8 @@ def scrape_upwork():
 def run_scrape_upwork_loop():
     minutes_to_sleep = 10
     while True:
+        os.system('cls')
+        print('*************************************************')
         # run the bot
         new_jobs_count, new_jobs_titles = scrape_upwork()
         # print current time and output
@@ -115,10 +118,10 @@ def run_scrape_upwork_loop():
             print(f'Found {new_jobs_count} new jobs:')
             for title in new_jobs_titles:
                 print(title)
-            print('-------------------------------------------------')
+            print('*************************************************')
         else:
             print(f'No new jobs found. ')
-            print('-------------------------------------------------')
+            print('*************************************************')
         sleep(60 * minutes_to_sleep)
         # ------------------------
 
