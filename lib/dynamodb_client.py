@@ -18,6 +18,7 @@ class DynamodbClient:
                 'title-description20': f'{job["title"]}-{job["description"][:20]}',
                 'time_posted': job['time_posted'],
                 'title': job['title'],
+                'url': job['url'],
                 'description': job['description'],
                 'experience_level': job['experience_level'],
                 'hourly_min': job['hourly_min'],

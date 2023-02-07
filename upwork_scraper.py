@@ -32,6 +32,7 @@ def scrape_upwork():
 
     driver.get(f'{base_endpoint}{sort_by}')
     titles = driver.find_elements(By.CLASS_NAME, 'job-tile-title')
+    urls = [title.find_element(By.TAG_NAME, 'a').get_attribute('href') for title in titles]
     descriptions = driver.find_elements(By.XPATH, '//span[@data-test="job-description-text"]')
     experience_levels = driver.find_elements(By.XPATH, '//span[@data-test="contractor-tier"]')
     times_posted = driver.find_elements(By.XPATH, '//span[@data-test="posted-on"]')
@@ -59,6 +60,7 @@ def scrape_upwork():
         hourly_min, hourly_max = get_min_max_hourly_rates(hourly_rates[i])
         new_job_data.append({
             'title': titles[i].text,
+            'url': urls[i],
             'description': descriptions[i].text,
             'experience_level': experience_levels[i].text,
             'time_posted': posted_time_to_datetime,
