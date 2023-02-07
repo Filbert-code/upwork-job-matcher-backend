@@ -64,11 +64,11 @@ class DynamodbClient:
 
 if __name__ == '__main__':
     db_client = DynamodbClient()
-    print([item['job_key'] for item in db_client.get_user_subscription_results('Python Data Jobs')])
+    # print([item['job_key'] for item in db_client.get_user_subscription_results('Python Data Jobs')])
     # db_client.create_user_keyword_subscription(
-    #     'test subscription 2',
-    #     ['business', 'awesomeness', 'money', 'spreadsheets', 'computer'],
-    #     [1, 20, 1, 1, 1]
+    #     'Web Dev',
+    #     ['html', 'website', 'web development', 'frontend'],
+    #     [1, 1, 2, 1]
     # )
     # print(db_client.get_user_subscription_results(
     #     'test subscription',
